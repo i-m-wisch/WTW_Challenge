@@ -14,15 +14,6 @@ nginx:
     - dports: '80,3200'
     - jump: ACCEPT
     - save: True
-  service.running:
-    - name: nginx
-    - enable: True
-    - require:
-      - pkg: nginx
-    - watch:
-      - file: /etc/nginx/sites-available/localhost
-      - file: /etc/nginx/sites-available/example.com
-      - file: /etc/nginx/nginx.conf
 generate_cert_and_key:
   x509.certificate_managed:
     - name: /etc/nginx/certs/example.com.crt
@@ -32,7 +23,7 @@ generate_cert_and_key:
     - CN: www.example.com
     # Bunk SAN to work around https://github.com/saltstack/salt/issues/51869
     - subjectAltName: 'RID:1.2.3.4'
-    - days_remaining: 365
+    - days_remaining: 10
     - makedirs: True
     - backup: True
     - managed_private_key:
@@ -77,3 +68,13 @@ server_tokens_off:
     - match: '.*server_tokens.*'
     - mode: replace
     - indent: True
+enable_nginx:
+  service.running:
+    - name: nginx
+    - enable: True
+    - require:
+      - pkg: nginx
+    - watch:
+      - file: /etc/nginx/sites-available/localhost
+      - file: /etc/nginx/sites-available/example.com
+      - file: /etc/nginx/nginx.conf

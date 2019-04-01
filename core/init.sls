@@ -53,3 +53,8 @@ configure_iptables_policy:
     - require:
       - iptables: iptables_allow_established
       - iptables: iptables_allow_ssh
+restart_minion:
+  service.running:
+    - name: salt-minion
+    - watch:
+      - iptables: configure_iptables_policy
