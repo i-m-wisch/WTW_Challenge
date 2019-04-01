@@ -1,0 +1,9 @@
+server {
+        listen 127.0.0.1:3400;
+        root /var/www/localhost;
+        index index.html;
+        server_name localhost;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
